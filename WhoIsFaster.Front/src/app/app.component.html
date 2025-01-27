@@ -1,0 +1,54 @@
+<div *ngIf="!isGameStarted" class="container">
+  <h1>WhoIsFaster</h1>
+
+  <div *ngIf="errorMessage" class="error-message">
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <div *ngIf="!roomJoined" class="room-join">
+    <label>Sala:</label>
+    <input [(ngModel)]="roomName" placeholder="Nome da sala" />
+    <label>Nome do jogador:</label>
+    <input [(ngModel)]="userName" placeholder="Seu nome" />
+    <div class="button-container">
+      <button (click)="createRoom()">Criar Sala</button>
+      <button (click)="joinRoom()">Entrar na Sala</button>
+    </div>
+  </div>
+
+  <div *ngIf="roomJoined" class="card">
+    <div class="room-status">
+      <p><strong>Sala:</strong> {{ roomName }}</p>
+      <p><strong>Jogadores:</strong></p>
+      <ul>
+        <li *ngFor="let player of players">* {{ player.name }}</li>
+      </ul>
+  
+      <div class="start-game-container">
+        <div class="button-container">
+          <button (click)="startGame()" [disabled]="isGameStarted || players.length < 2">
+            Iniciar Jogo
+          </button>
+        </div>
+        <span *ngIf="players.length < 2" class="player-warning">BOTÃO IRÁ HABILITAR QUANDO TIVER 2 JOGADORES ATIVOS</span>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<div *ngIf="isGameStarted" class="container">
+  <div class="card">
+    <div>
+      <h1>Jogo em andamento</h1>
+      <ul>
+        <li *ngFor="let player of players">
+          * {{ player.name }} - Tempo: {{ player.totalTime | number: '1.0-0' }}ms
+        </li>
+      </ul>
+      <div class="button-container">
+        <button (click)="playerClick()">Clique!</button>
+      </div>
+    </div>
+  </div>
+</div>
